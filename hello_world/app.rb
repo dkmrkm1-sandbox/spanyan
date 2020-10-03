@@ -2,6 +2,8 @@
 require 'json'
 
 def lambda_handler(event:, context:)
+  # parameters = event['queryStringParameters']['hoge']
+  # puts "parameters: #{event}"
   # Sample pure Lambda function
 
   # Parameters
@@ -31,7 +33,7 @@ def lambda_handler(event:, context:)
   {
     statusCode: 200,
     body: {
-      message: "Hello World!",
+      message: "parameters",
       # location: response.body
     }.to_json
   }
