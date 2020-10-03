@@ -1,5 +1,16 @@
 # require 'httparty'
 require 'json'
+require 'aws-record'
+
+class Spa
+  include Aws::Record
+  set_table_name ENV['DDB_TABLE']
+  string_attr :id, hash_key: true
+  string_attr :name
+  string_attr :area
+  string_attr :prefecture
+  # string_attr :url
+end
 
 def lambda_handler(event:, context:)
   # parameters = event['queryStringParameters']['hoge']
