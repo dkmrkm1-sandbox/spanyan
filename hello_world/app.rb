@@ -1,6 +1,6 @@
+require 'aws-record'
 # require 'httparty'
 require 'json'
-require 'aws-record'
 
 class Spa
   include Aws::Record
@@ -9,13 +9,27 @@ class Spa
   string_attr :name
   string_attr :area
   string_attr :prefecture
-  # string_attr :url
+  string_attr :effect
+  string_attr :image_url
 end
 
 def lambda_handler(event:, context:)
-  # parameters = event['queryStringParameters']['hoge']
-  # puts "parameters: #{event}"
-  # Sample pure Lambda function
+  area = event['queryStringParameters']['area']
+
+  scans = Spa.scan(
+    filter_expression: "contains(#B, :b)",
+    expression_attribute_names: {
+        "#B" => "area"
+    },
+    expression_attribute_values: {
+        ":b" => "#{area}"
+    }
+  )
+
+  spas = []
+  scans.each do |spa|
+    spas << spa.to_h
+  end
 
   # Parameters
   # ----------
@@ -44,7 +58,7 @@ def lambda_handler(event:, context:)
   {
     statusCode: 200,
     body: {
-      message: "parameters",
+      spas: spas
       # location: response.body
     }.to_json
   }
